@@ -10,7 +10,7 @@ export class ProductService {
   constructor(public http: HttpClient) {
   }
   getlaytatcasanpham(): Observable<any> {
-    return this.http.get<any>(environment.URL_API + "sanphams")
+    return this.http.get<any>(environment.URL_API + "sanphams/GetCompleteProduct")
   }
   getsanphammoi(): Observable<any> {
     return this.http.get<any>(environment.URL_API + "sanphams/topsanphammoi")

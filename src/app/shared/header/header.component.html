@@ -6,12 +6,12 @@
         <div class="top-bar">
             <div class="content-topbar flex-sb-m h-full container">
                 <div class="left-top-bar">
-                    Miễn phí giao hàng với đơn trên 100,000,000 VNĐ
+                    <!-- Miễn phí giao hàng với đơn trên 10,000,000 VNĐ -->
                 </div>
                 <div class="right-top-bar flex-w h-full">
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
+                    <!-- <a href="#" class="flex-c-m trans-04 p-lr-25">
                         Trợ giúp
-                    </a>
+                    </a> -->
                     <a [routerLink]="['/info_user']" class="flex-c-m trans-04 p-lr-25" *ngIf="this.user!=null">
                         Xin chào {{this.user.firstName+" "+this.user.lastName}}
                     </a>
@@ -21,9 +21,13 @@
                     <a href="/login" class="flex-c-m trans-04 p-lr-25" *ngIf="this.user==null">
                         Đăng nhập
                     </a>
+                    <a [routerLink]="['/reset']" class="flex-c-m trans-04 p-lr-25" *ngIf="this.user!=null">
+                        Đổi mật khẩu
+                    </a>
                     <a (click)="logout()" href="#" class="flex-c-m trans-04 p-lr-25" *ngIf="this.user!=null">
                         Đăng xuất
                     </a>
+                    
                 </div>
             </div>
         </div>
@@ -31,7 +35,7 @@
             <nav class="limiter-menu-desktop container">
                 <!-- Logo desktop -->
                 <a routerLink="/" class="logo">
-                    <img src="assets/images/icons/logo-01.png" alt="IMG-LOGO">
+                    <img src="assets/images/icons/logo.png" alt="IMG-LOGO">
                 </a>
                 <!-- Menu desktop -->
                 <div class="menu-desktop">
@@ -55,16 +59,16 @@
                 </div>
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
+                    <!-- <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
                         <i class="zmdi zmdi-search"></i>
-                    </div>
+                    </div> -->
                     <div class="cart">
                       <a [routerLink]="['/checkout']">
                         <img src="assets/images/icons/cart.png" class="img-fluid" alt="">
                         <i class="ti-shopping-cart"></i>
                       </a>
                     </div>
-                    <span class="cart_qty_cls">{{(items$ | async).length}}</span>
+                    <span class="cart_qty_cls">{{(items$ | async)?.length || 0}}</span>
                     <div class="like">
                       <a [routerLink]="['/like']">
                         <img src="assets/images/icons/love.png" class="img-fluid" alt="">
@@ -106,7 +110,7 @@
         <ul class="topbar-mobile">
             <li>
                 <div class="left-top-bar">
-                    Miễn phí giao hàng với đơn trên 100,000,000 VNĐ
+                    <!-- Miễn phí giao hàng với đơn trên 10,000,000 VNĐ -->
                 </div>
             </li>
             <li>
@@ -142,7 +146,7 @@
         </ul>
     </div>
     <!-- Modal Search -->
-    <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
+    <!-- <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
         <div class="container-search-header">
             <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
                 <img src="assets/images/icons/icon-close2.png" alt="CLOSE">
@@ -154,5 +158,5 @@
                 <input class="plh3" type="text" name="search" placeholder="Search...">
             </form>
         </div>
-    </div>
+    </div> -->
 </header>

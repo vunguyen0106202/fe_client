@@ -1,7 +1,9 @@
+import { Route } from '@angular/compiler/src/core';
 import { Component,OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SharedService } from './shared/shared.service';
 import { ProductService } from './shared/product/product.service';
+import { Router } from '@angular/router';
 declare var $: any;
 @Component({
   selector: 'app-root',
@@ -9,7 +11,11 @@ declare var $: any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(public productservice:ProductService){
+  constructor(public productservice:ProductService,public router: Router){
+  }
+  shouldShowChatBubble(): boolean {
+    const excludedRoutes = ['/login', '/register','/forgot']; 
+    return !excludedRoutes.includes(this.router.url);
   }
   ngOnInit(){
     $(".animsition").animsition({

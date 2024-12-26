@@ -3,6 +3,72 @@
 	text-align: center;
 	letter-spacing: 2px;
 }
+/* To make the image background cover the entire screen */
+.login-page {
+    position: relative;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Center the login form */
+.login-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: Add some transparency */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Max width for the form */
+}
+
+/* Style the form container */
+.login-container input[type="email"],
+.login-container input[type="password"],
+.login-container input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Additional styling for buttons and links */
+.bottom-text {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.bottom-text p {
+    font-size: 14px;
+}
+
+.bottom-text a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.bottom-text a:hover {
+    text-decoration: underline;
+}
+
+.btn-social-icon {
+    background-color: #db4437;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-social-icon:hover {
+    background-color: #c1351d;
+}
+
 .login-title h1 {
 	margin: 0 0 0px;
     font-size: 45px;
@@ -22,11 +88,11 @@
 	font-weight: 600;
 	text-decoration: none;
 }
-.login {
-	width: 400px;
-	margin: 16px auto;
-	font-size: 16px;
-}
+// .login {
+// 	width: 400px;
+// 	margin: 16px auto;
+// 	font-size: 16px;
+// }
 /* Reset top and bottom margins from certain elements */
 .login-header,
 .login p {
@@ -102,10 +168,7 @@
 .form .social-icons {
 	font-size:20px;
 }
-.form .social-icons { 
-}
-.second-section{
-}
+
 .social-links {
       margin: 0px 0px 20px 0px;
   	  text-align: center;
@@ -219,8 +282,7 @@ input[type=submit]:hover {
 .bottom-text h4 a:hover {
 	color:#ef4d4d;
 }
-.footer-w3l {
-}
+
 .footer-w3l p{
 	font-size:14px;
 	letter-spacing:0.5px;

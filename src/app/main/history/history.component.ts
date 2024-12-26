@@ -10,10 +10,11 @@ import { environment } from 'src/environments/environment';
 })
 export class HistoryComponent implements OnInit {
   list_hoadon:any;
-  constructor(public http:HttpClient,private userService: UserService) {
-    userService.checkLogin();
+  constructor(public http:HttpClient,public userService: UserService) {
+    // userService.checkLogin();
    }
   ngOnInit(): void {
+    this.userService.checkLogin();
     const clicks = localStorage.getItem('idUser');
     this.http.post(environment.URL_API+"hoadons/danhsachhoadon/",{
       idUser:clicks

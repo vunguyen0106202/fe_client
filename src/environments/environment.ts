@@ -3,9 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  GG_CLIENT_ID :"1047302420815-i49u6epeei8m0sps3fonhrju9000hs5j.apps.googleusercontent.com",
-  URL_API:"https://localhost:44302/api/"
+  // GG_CLIENT_ID :"324803995091-7bk5q83mf7ntetd4af5e87ilma8fn3ql.apps.googleusercontent.com",
+  GG_CLIENT_ID:"335393589702-1gcpve0eclfdq9qaa2p7nfjh99rp06jt.apps.googleusercontent.com",
+  URL_API:"https://localhost:44302/api/",
+  URL_API1:"https://localhost:44302/api",
+  PathUrl: 'https://localhost:44302'
 };
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

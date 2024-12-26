@@ -12,6 +12,8 @@ import { environment } from 'src/environments/environment';
 export class LikeComponent implements OnInit {
   list_sanphamyeuthich:any;
   constructor(public http:HttpClient,public route: ActivatedRoute,private cartService: CartService) {
+   }
+  ngOnInit(): void {
     const clicks = localStorage.getItem('idUser');
   this.http.post(environment.URL_API+"sanphams/dslike/",{
     IdUser:clicks,
@@ -23,8 +25,6 @@ export class LikeComponent implements OnInit {
         }
         
       });
-   }
-  ngOnInit(): void {
   }
   deleteSanPham(product){
     this.http.post(environment.URL_API+"sanphams/deletelike/"+product.id,{

@@ -14,6 +14,9 @@ export class DetailComponent implements OnInit ,AfterViewInit{
   public id_blog: string;
   public blog:any;
   constructor(public http:HttpClient,public route: ActivatedRoute,private sanitized: DomSanitizer) { 
+    
+  }
+  ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id_blog = params['id']; // get id to params
   });
@@ -26,8 +29,6 @@ export class DetailComponent implements OnInit ,AfterViewInit{
       
       
   });
-  }
-  ngOnInit(): void {
     console.log("id",this.id_blog)
   }
   isExpanded = false;
@@ -35,8 +36,12 @@ export class DetailComponent implements OnInit ,AfterViewInit{
   @ViewChild('contentWrapper') contentWrapper!: ElementRef;
   ngAfterViewInit() {
     // Kiểm tra chiều cao của nội dung sau khi view được render
-    if (this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight) {
-      this.showReadMore = true; // Hiển thị nút "Xem thêm" nếu chiều cao nội dung lớn hơn chiều cao container
+    if (this.contentWrapper && this.contentWrapper.nativeElement) {
+      if (this.contentWrapper.nativeElement.scrollHeight > this.contentWrapper.nativeElement.clientHeight) {
+        this.showReadMore = true;
+      }
+    } else {
+      console.log('contentWrapper không được khởi tạo hoặc không tồn tại trong view.');
     }
     $('.wrap-slick3').each(function(){
       $(this).find('.slick3').slick({

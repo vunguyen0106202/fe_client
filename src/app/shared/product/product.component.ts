@@ -32,12 +32,15 @@ export class ProductComponent implements OnInit, AfterViewInit {
     filteredProducts: any[] = [];
     paginatedProducts = [];
     currentPage: number = 1;
-    itemsPerPage: number = 8; // 12 sản phẩm mỗi trang
+    itemsPerPage: number = 8;
     totalPages: number[] = [];
     filter: number=-1;
 
     public statusData: boolean = false
     constructor(public http: HttpClient, public cart: CartService, public service: ProductService, public sharedservice: SharedService) {
+        
+    }
+    ngOnInit() {
         this.chose_gia = 1;
         this.chose_mau = 1
         this.http
@@ -62,8 +65,6 @@ export class ProductComponent implements OnInit, AfterViewInit {
                 numScroll: 1
             }
         ];
-    }
-    ngOnInit() {
         this.loadProducts();
         this.service.getlaytatcasanpham().subscribe(
             (resp: any) => {
@@ -75,7 +76,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
                 this.filterProducts(-1);
               } else {
                 console.error('API không trả về mảng:', resp);
-                this.list_product = []; // Đặt giá trị mặc định là mảng rỗng
+                this.list_product = [];
               }
               this.sharedservice.dataloadvariable = true;
               this.statusData = true;
@@ -102,7 +103,7 @@ export class ProductComponent implements OnInit, AfterViewInit {
         });
         connection.on("BroadcastMessage", () => {
             this.service.getlaytatcasanpham().subscribe(resp => {
-                this.list_product = resp as Product[];
+                this.list_product = resp.data as Product[];
                 this.list_product_male = this.list_product.filter(d => d.gioiTinh == 1);
                 this.list_product_female = this.list_product.filter(d => d.gioiTinh == 2);
             });
@@ -211,18 +212,30 @@ export class ProductComponent implements OnInit, AfterViewInit {
                 this.updatePagination();
             });
     }
-    searchTheoLoai(loai:number, choser) {
-        this.service.searchTheoLoai(loai).subscribe((resp:any) => {
+    // searchTheoLoai(loai:number, choser) {
+    //     this.service.searchTheoLoai(loai).subscribe((resp:any) => {
+    //             if(resp.status){
+    //                 this.list_product = resp.data;
+    //                 console.log("vu",resp)
+    //                 this.chose_loai = choser;
+    //                 this.updatePagination();
+    //             }
+                
+    //         });
+    // }
+    searchTheoLoai(loai:string, chose) {
+        this.http
+            .post(environment.URL_API + 'sanphams/searchtheoloai', {
+                loai:loai
+            }
+            ).subscribe((resp:any) => {
                 if(resp.status){
                     this.list_product = resp.data;
-                    console.log("vu",resp)
-                    this.chose_loai = choser;
-                    this.updatePagination();
+                    this.chose_loai= chose;
                 }
                 
             });
     }
-
     searchthemau(mausac, chose) {
         this.http
             .post(environment.URL_API + 'sanphams/searchtheomau', {
@@ -237,9 +250,18 @@ export class ProductComponent implements OnInit, AfterViewInit {
             });
     }
 
-    onSearchChange(searchValue: string): void {
-        this.list_product.filter(d => d.ten)
-    }
+    onSearchChange() {
+        // Khi giá trị tìm kiếm thay đổi
+        if (this.searchText.trim() === '') {
+          this.filteredProducts = [...this.list_product];  // Hiển thị tất cả nếu không có gì tìm kiếm
+        } else {
+          this.filteredProducts = this.list_product.filter(product =>
+            product.ten.toLowerCase().includes(this.searchText.toLowerCase())
+          );  // Lọc sản phẩm theo tên
+        }
+        this.currentPage = 1;  // Reset lại trang khi tìm kiếm thay đổi
+        this.updatePagination();
+      }
 
     check(idSanPham): number {
         var kq;

@@ -9,7 +9,7 @@ export interface Product {
     trangThaiSanPham?: string;
     trangThaiSanPhamThietKe?:string;
     trangThaiHoatDong?:string;
-    huongDan?:string;
+    huongDan:string;
     thanhPhan?:string;
     tenNhanHieu?:string;
     tenLoai?:string;

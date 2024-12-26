@@ -2,3 +2,22 @@
     font-weight: bold; /* In đậm */
     font-size: 3rem;   /* Phóng to ra, bạn có thể điều chỉnh theo nhu cầu */
 }
+.blog-item .blog-image {
+    width: 100%;              /* Ảnh sẽ chiếm 100% chiều rộng của khung */
+    height: 300px;            /* Chiều cao cố định của khung (có thể điều chỉnh) */
+    object-fit: contain;        /* Ảnh sẽ tự động căn chỉnh để vừa khung và giữ tỉ lệ */
+    border-radius: 5px;       /* Tùy chọn: Bo góc ảnh */
+    overflow: hidden;         /* Ẩn phần tràn ra ngoài nếu có */
+    display: block;           /* Đảm bảo ảnh là khối */
+  }
+.bordered-item {
+    border: 2px solid #00000027;      /* Thêm viền đen 2px */
+    border-radius: 8px;          /* Bo góc để tạo hiệu ứng mềm mại */
+    padding: 15px;               /* Tùy chọn: Thêm khoảng cách giữa viền và nội dung */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* Tùy chọn: Thêm bóng đổ nhẹ để tạo chiều sâu */
+    background-color: #fff;      /* Tùy chọn: Màu nền trắng */
+    margin-bottom: 20px;          /* Khoảng cách giữa các phần tử blog */
+  }
+  
+
+  

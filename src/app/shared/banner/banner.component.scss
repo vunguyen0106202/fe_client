@@ -203,3 +203,18 @@
   border-radius: 5px; /* Bo góc */
   font-weight: bold;
 }
+@keyframes rotateInUpRight {
+  from {
+    transform: rotate3d(0, 0, 1, 90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotate3d(0, 0, 1, 0);
+    opacity: 1;
+  }
+}
+
+.rotate-in-up-right {
+  animation: rotateInUpRight 0.8s ease-in-out;
+}
+

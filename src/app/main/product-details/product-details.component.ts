@@ -1,13 +1,14 @@
 import { Component, OnInit ,AfterViewInit} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser'
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2'
 import {Product} from '../../model/product.model'
 import {sanPhamBienThes} from '../../model/product.model'
 import { CartService } from 'src/app/service/product.service';
 import { UserService } from 'src/app/service/account/user.service';
 import { environment } from 'src/environments/environment';
+import { AuthLoginService } from 'src/app/service/account/auth-login.service';
 declare var $: any;
 @Component({
   selector: 'app-product-details',
@@ -17,70 +18,85 @@ declare var $: any;
 export class ProductDetailsComponent implements OnInit ,AfterViewInit{
   public id_product: string;
   public product:Product;
-  public size:any;
-  public mau:any;
+  public size:any[]=[];
+  public mau:any[]=[];
   public list_san_pham_bien_the:sanPhamBienThes[];
   testMarkup:SafeHtml;
   selectMau = null;
   selectSize = null;
   Content="";
-  list_review:any;
+  list_review:any[]=[];
+  hd:any;
   soLuong:number;
-  constructor(private cartService: CartService,public userService: UserService,public http:HttpClient,public route: ActivatedRoute,private sanitized: DomSanitizer) {
+  constructor(private cartService: CartService,public userService: UserService,public http:HttpClient,public route: ActivatedRoute,private sanitized: DomSanitizer,private router: Router,private authService: AuthLoginService) {
+    
+  }
+  ngOnInit(){
     this.route.params.subscribe(params => {
       this.id_product = params['id']; // get id to params
   });
   this.soLuong=0;
+
   this.http.get(environment.URL_API+"sanphams/chitietsanpham/"+this.id_product
           ).subscribe(resp => {
               this.product =resp as Product;
+              console.log("hd",this.product)
+              if(this.product==null){
+                Swal.fire('Sản phẩm hết hàng');
+                this.router.navigate(['']);
+              }
               this.list_san_pham_bien_the= this.product.sanPhamBienThes;
               this.testMarkup = this.sanitized.bypassSecurityTrustHtml(this.product.moTa);
               this.http.post(environment.URL_API+"mausacs/mau/",{
                 id_san_pham:this.id_product,
     }).subscribe(
-      res=>{
+      (res:any)=>{
         this.mau=res;
       });
-      this.size={};
+      this.size=[];
       this.http.post(environment.URL_API+"sanphams/listreview/",{
         IdSanPham:this.product.id
     }).subscribe(
-      res=>{
+      (res:any)=>{
         this.list_review=res;
       });
           });
-  }
-  ngOnInit(){
   }
   onChangeMau(mau){
     this.http.post(environment.URL_API+"sizes/sizetheomau/",{
       id_san_pham:this.id_product,
       mamau:mau
     }).subscribe(
-      res=>{
+      (res:any)=>{
         this.size=res;
       });
   }
   Review(){
+    if (!this.authService.isLoggedIn()) {
+      alert('Bạn cần đăng nhập để sử dụng chức năng này!');
+      this.router.navigate(['/login']); // Điều hướng tới trang đăng nhập
+      return;
+    }
     const clicks = localStorage.getItem('idUser');
     this.http.post(environment.URL_API+"sanphams/review/",{
         IdUser:clicks,
         IdSanPham:this.product.id,
         Content:this.Content,
     }).subscribe(
-      res=>{
+      (res:any)=>{
         this.list_review=res;
         this.Content="";
       });
   }
   soLuongTru(){
-    if(this.soLuong>=0)
-    {
-    }
-    else
+    if(this.soLuong>0)
     {
       this.soLuong--;
+    }
+  }
+  soLuongCong(){
+    if(this.soLuong<this.maxQty()){
+      this.soLuong++;
     }
   }
   ngAfterViewInit(): void {
@@ -189,23 +205,34 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   $(nameTab).find('.slick2').slick('reinit');
 });
   }
-  maxQty(){
-    if(this.list_san_pham_bien_the.filter(d=>d.tenMau==this.selectMau&&d.tenSize==this.selectSize)[0]!=null){
-      let maxQty = this.list_san_pham_bien_the.filter(d=>d.tenMau==this.selectMau&&d.tenSize==this.selectSize)[0].soLuongTon
-      return maxQty
+  // maxQty(){
+  //   if(this.list_san_pham_bien_the.filter(d=>d.tenMau==this.selectMau&&d.tenSize==this.selectSize)[0]!=null){
+  //     let maxQty = this.list_san_pham_bien_the.filter(d=>d.tenMau==this.selectMau&&d.tenSize==this.selectSize)[0].soLuongTon
+  //     return maxQty
+  //   }
+  //   return 0
+  // }
+  // checkQty(){
+  //   if(this.maxQty()<=0){
+  //       return true
+  //   }
+  // }
+  maxQty(): number {
+    if (!this.list_san_pham_bien_the || !Array.isArray(this.list_san_pham_bien_the)) {
+      return 0;
     }
-    return 0
+  
+    const variant = this.list_san_pham_bien_the.find(
+      d => d.tenMau === this.selectMau && d.tenSize === this.selectSize
+    );
+  
+    return variant ? variant.soLuongTon : 0;
   }
-  checkQty(){
-    if(this.maxQty()<=0){
-        return true
-    }
+  
+  checkQty(): boolean {
+    return this.maxQty() <= 0;
   }
-  soLuongCong(){
-    if(this.soLuong<this.maxQty()){
-      this.soLuong++;
-    }
-  }
+  
   addToCard(product) {
     if( !this.userService.checkLogin())
     {
@@ -226,6 +253,7 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
       ).subscribe(resp => {
         this.cartService.addToCart(product);
       });
+      // this.router.navigate(['/checkout']);
     }
   }
   // addToCard(){

@@ -14,6 +14,8 @@ import { LikeComponent } from './main/like/like.component';
 import { RegisterComponent } from './main/register/register.component';
 import { InfoUserComponent } from './main/info-user/info-user.component';
 import { BlogComponent } from './main/blog/blog.component';
+import { ResetComponent } from './main/reset/reset.component';
+import { ForgotComponent } from './main/forgot/forgot.component';
 const routes: Routes = [
   {
     path: 'info_user',
@@ -24,6 +26,11 @@ const routes: Routes = [
     path: 'checkout',
     component: CheckoutComponent,
     data: {breadcrumb: 'Checkout'}
+  },
+  {
+    path: 'forgot',
+    component: ForgotComponent,
+    data: {breadcrumb: 'Forgot'}
   },
   {
     path: 'like',
@@ -70,6 +77,7 @@ const routes: Routes = [
     component: BlogComponent,
     // data: {breadcrumb: 'Blog Detail'}
   },
+  
   { path: 'blog/:id', component: DetailComponent },
   {
     path: 'product/:id',
@@ -78,7 +86,12 @@ const routes: Routes = [
   {
     path: 'bill/:id',
     component: BillDetailsComponent
-  }
+  },
+  {
+    path: 'reset',
+    component: ResetComponent,
+    data: {breadcrumb: 'reset'}
+  },
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

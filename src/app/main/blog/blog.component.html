@@ -7,30 +7,14 @@
       </div>
       <div class="row">
           <div class="col-sm-6 col-md-4 p-b-40" *ngFor="let item of listblog">
-              <div class="blog-item">
+              <div class="blog-item bordered-item">
                   <div class="hov-img0">
                       <a [routerLink]="['/blog', item.id]">
-                          <img [src]="getImage(item.image)" alt="IMG-BLOG">
+                          <img [src]="getImage(item.image)" alt="IMG-BLOG" class="blog-image">
                       </a>
                   </div>
                   <div class="p-t-15">
                       <div class="stext-107 flex-w p-b-14">
-                          <!-- <span class="m-r-3">
-                              <span class="cl4">
-                                  By
-                              </span>
-                              <span class="cl5">
-                                  Nancy Ward
-                              </span>
-                          </span>
-                          <span>
-                              <span class="cl4">
-                                  on
-                              </span>
-                              <span class="cl5">
-                                  July 22, 2017
-                              </span>
-                          </span> -->
                       </div>
                       <h4 class="p-b-12">
                           <a [routerLink]="['/blog', item.id]" class="mtext-101 cl2 hov-cl1 trans-04">

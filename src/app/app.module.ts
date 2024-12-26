@@ -43,7 +43,18 @@ import { SocialLoginModule,SocialAuthServiceConfig } from "angularx-social-login
 import { GoogleLoginProvider } from "angularx-social-login";
 import { environment } from 'src/environments/environment';
 
+import { ResetComponent } from './main/reset/reset.component';
+import { CheckboxModule } from 'primeng/checkbox';
 
+import { ForgotComponent } from './main/forgot/forgot.component';
+import { AccountsService } from './service/account.service';
+import { ChatComponent } from './shared/chat/chat.component';
+ 
+// cấu hình để các user mới có thể login được
+const googleLoginOptions = {
+  scope: 'profile email',
+  plugin_name:'login'
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +81,10 @@ import { environment } from 'src/environments/environment';
     BillDetailsComponent,
     RegisterComponent,
     InfoUserComponent,
-    LoginfacebookComponent
+    LoginfacebookComponent,
+    ResetComponent,
+    ForgotComponent,
+    ChatComponent,
   ],
   imports: [
     FacebookModule.forRoot(),
@@ -83,8 +97,10 @@ import { environment } from 'src/environments/environment';
     MatCheckboxModule,
     CarouselModule,
     NgxPaginationModule,
+    CheckboxModule,
     //ToastModule,
-    FormsModule, ReactiveFormsModule,
+    FormsModule, 
+    ReactiveFormsModule,
     HttpClientModule,
     NgxPaginationModule,
     BrowserAnimationsModule,
@@ -92,15 +108,17 @@ import { environment } from 'src/environments/environment';
   ],
   providers: [
     UserService,
+    AccountsService,
     {
       provide: "SocialAuthServiceConfig",
       useValue: {
-        autoLogin: true,
+        autoLogin: false,
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(
-              environment.GG_CLIENT_ID
+              environment.GG_CLIENT_ID,
+              googleLoginOptions
             )
           }
         ]

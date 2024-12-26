@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {UserIdenity} from '../../model/user.model'
 import { CartService } from 'src/app/service/product.service';
 import { environment } from 'src/environments/environment';
+import { AuthLoginService } from 'src/app/service/account/auth-login.service';
 declare var $: any;
 @Component({
   selector: 'app-header',
@@ -10,20 +11,27 @@ declare var $: any;
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit  {
+
      user:any;
-  constructor(public http:HttpClient,private cartService: CartService)
-  {
-    this.http.get(environment.URL_API+"Auth/AuthHistory").subscribe(
-    res=>{
-      this.user = res;
-    },
-    error=>{
-    }
-    );
-   }
-   items$ = this.cartService.items$;
-   items1$ = this.cartService.items1$;
-  ngOnInit(): void {
+
+  constructor(public http:HttpClient,private cartService: CartService, private authService: AuthLoginService){}
+  
+  items$ = this.cartService.items$;
+  items1$ = this.cartService.items1$;
+
+  ngOnInit() {
+    
+    this.authService.authNavStatus$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.authService.loadUserData().subscribe(
+          res => this.user = res,
+          error => console.error('Failed to fetch user data:', error)
+        );
+      }
+    });
+    
+
+
     $('.js-show-modal-search').on('click', function(){
       $('.modal-search-header').addClass('show-modal-search');
       $(this).css('opacity','0');
@@ -97,24 +105,13 @@ $('.js-hide-cart').on('click',function(){
           });
       }
   });
+
   }
   logout() {
-    this.http.post(environment.URL_API+"Auth/logout",{}).subscribe(
-        res=>{
-        },
-        error=>{
-        }
-        );
-        this.http.get(environment.URL_API+"Auth/AuthHistory").subscribe(
-    res=>{
-      this.user = res;
-    },
-    error=>{
-    }
-    );
+    this.authService.logout();
     localStorage.removeItem('auth_token');
-    localStorage.removeItem('products');
     localStorage.removeItem('idUser');
-    window.location.href="/login";
+    localStorage.removeItem('products');
+    window.location.href = '/login';
   }
 }

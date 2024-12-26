@@ -10,20 +10,20 @@
             <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
         </a> -->
         <span class="stext-109 cl4">
-            {{this.product.ten}}
+            {{this.product?.ten}}
         </span>
     </div>
 </div>
 <!-- Product Detail -->
-<section class="sec-product-detail bg0 p-t-65 p-b-60">
+<section  class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-lg-7 p-b-30">
-                <div class="p-l-25 p-r-30 p-lr-0-lg">
+                <div *ngIf="product?.imageSanPhams?.length > 0"  class="p-l-25 p-r-30 p-lr-0-lg">
                     <div class="wrap-slick3 flex-sb flex-w">
                         <div class="wrap-slick3-dots"></div>
                         <div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-                        <div class="slick3 gallery-lb">
+                         <div class="slick3 gallery-lb">
                             <div class="item-slick3" *ngFor="let item of product.imageSanPhams" data-thumb="https://localhost:44302/Images/list-image-product/{{item.imageName}}">
                                 <div class="wrap-pic-w pos-relative">
                                     <img src="https://localhost:44302/Images/list-image-product/{{item.imageName}}" alt="IMG-PRODUCT">
@@ -39,10 +39,10 @@
             <div class="col-md-6 col-lg-5 p-b-30">
                 <div class="p-r-50 p-t-5 p-lr-0-lg">
                     <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-                        {{this.product.ten}}
+                        {{this.product?.ten}}
                     </h4>
                     <span class="mtext-106 cl2">
-                        {{product.giaBan|number}} VNĐ
+                        {{product?.giaBan|number}} VNĐ
                     </span>
                     <!--  -->
                     <div class="p-t-33">
@@ -54,7 +54,7 @@
                                 <div class="rs1-select2 bor8 bg0">
                                     <select [(ngModel)]="selectMau" (change)="onChangeMau($event.target.value)" class="js-select2" name="time">
                                     <option value=null>Chọn màu</option>
-                                    <option *ngFor="let item of mau" [value]="item.mau">{{item.mau}}</option>
+                                    <option *ngFor="let item of mau" [value]="item?.mau">{{item?.mau}}</option>
                                 </select>
                                     <div class="dropDownSelect2"></div>
                                 </div>
@@ -68,7 +68,7 @@
                                 <div class="rs1-select2 bor8 bg0">
                                     <select [(ngModel)]="selectSize" class="js-select2" name="time">
                                         <option value=null>Chọn Size</option>
-                                        <option *ngFor="let item of size" [value]="item.size">{{item.size}}</option>
+                                        <option *ngFor="let item of size" [value]="item?.size">{{item?.size}}</option>
                                     </select>
                                     <div class="dropDownSelect2"></div>
                                 </div>
@@ -113,9 +113,9 @@
                     <li class="nav-item p-b-10">
                         <a class="nav-link" data-toggle="tab" href="#information" role="tab">Mô tả</a>
                     </li>
-                    <li class="nav-item p-b-10">
+                    <!-- <li class="nav-item p-b-10">
                         <a class="nav-link " data-toggle="tab" href="#reviews" role="tab">Hướng dẫn</a>
-                    </li>
+                    </li> -->
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content p-t-43">
@@ -165,19 +165,24 @@
                     <div class="tab-pane fade" id="information" role="tabpanel">
                         <div class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-                                {{product.huongDan}}
+                                {{this.product.moTa}}
                             </div>
                         </div>
                     </div>
                     <!-- - -->
-                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                    <!-- <div class="tab-pane fade" id="information" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
+                                {{this.product?.huongDan}}
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div class="tab-pane fade" id="reviews" role="tabpanel">
                         <div class="row">
                             <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
                                 <div class="p-b-30 m-lr-15-sm">
-                                    <!-- Review -->
                                     <div class="flex-w flex-t p-b-68">
                                         <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-                                            <img src="images/avatar-01.jpg" alt="AVATAR">
                                         </div>
                                         <div class="size-207">
                                             <div class="flex-w flex-sb-m p-b-17">
@@ -197,7 +202,6 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <!-- Add review -->
                                     <form class="w-full">
                                         <h5 class="mtext-108 cl2 p-b-7">
                                             Add a review
@@ -239,7 +243,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  -->
                 </div>
             </div>
         </div>

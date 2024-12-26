@@ -12,17 +12,18 @@ export class BannerComponent implements OnInit,AfterViewInit {
   public list_banner_bottom:any[]=[];
   public currentSlide: number = 0;
   constructor(public http:HttpClient) { 
+    
+    
+  }
+  countdownDisplay: string = '';
+  countdownInterval: any;
+  ngOnInit(): void {
     this.http.get(environment.URL_API+"Banners/get?type=1",{}).subscribe(
       (res:any)=>{
         this.list_banner_top=res.data;
         console.log("banner",this.list_banner_top);
         this.startCountdown();
     });
-    
-  }
-  countdownDisplay: string = '';
-  countdownInterval: any;
-  ngOnInit(): void {
   }
   getImage(path: string) {
     return `https://localhost:44302/Images/list-image-banner/${path}`;
@@ -30,30 +31,62 @@ export class BannerComponent implements OnInit,AfterViewInit {
 
 currentIndex = 0; // Slide hiện tại
 
+  // prevSlide() {
+  //   this.currentIndex =
+  //     (this.currentIndex - 1 + this.list_banner_top.length) % this.list_banner_top.length;
+  //   this.updateSlide();
+  // }
+
+  // nextSlide() {
+  //   this.currentIndex = (this.currentIndex + 1) % this.list_banner_top.length;
+  //   this.updateSlide();
+  // }
   prevSlide() {
+    if (!this.list_banner_top || this.list_banner_top.length === 0) return;
+  
     this.currentIndex =
       (this.currentIndex - 1 + this.list_banner_top.length) % this.list_banner_top.length;
     this.updateSlide();
   }
-
+  
   nextSlide() {
+    if (!this.list_banner_top || this.list_banner_top.length === 0) return;
+  
     this.currentIndex = (this.currentIndex + 1) % this.list_banner_top.length;
     this.updateSlide();
   }
 
   updateSlide() {
     const slider = document.querySelector('.slider') as HTMLElement;
-    const slideWidth = slider.clientWidth; // Chiều rộng của một slide
+    if (!slider) {
+      // console.error('Không tìm thấy phần tử slider');
+      return; 
+    }
+    const slideWidth = slider.clientWidth;
     slider.style.transform = `translateX(-${this.currentIndex * slideWidth}px)`;
   }
 
+  // ngAfterViewInit() {
+  //   setInterval(() => this.nextSlide(), 5000); // Chuyển slide 
+  // }
   ngAfterViewInit() {
-    // Khởi động auto-slide
-    setInterval(() => this.nextSlide(), 5000); // Chuyển slide sau mỗi 3 giây
+    // Chờ dữ liệu list_banner_top được load
+    if (this.list_banner_top && this.list_banner_top.length > 0) {
+      setInterval(() => this.nextSlide(), 5000); // Chuyển slide mỗi 5 giây
+    } else {
+      // console.warn('');
+      const checkDataLoaded = setInterval(() => {
+        if (this.list_banner_top && this.list_banner_top.length > 0) {
+          clearInterval(checkDataLoaded); // Dừng kiểm tra khi đã có dữ liệu
+          console.log('Dữ liệu banner đã load, khởi động slide.');
+          setInterval(() => this.nextSlide(), 5000);
+        }
+      }, 500); // Kiểm tra dữ liệu mỗi 0.5 giây
+    }
   }
+  
   countdownIntervals: any[] = [];
   ngOnDestroy() {
-    // Dừng các interval khi component bị hủy
     this.countdownIntervals.forEach(interval => clearInterval(interval));
   }
 
